@@ -12,7 +12,7 @@ typedef struct Grafo {
   No** adjList;
 } Grafo;
 
-// Cria um Nó
+// Cria um Nó com peso
 No* criarNo(int dest, int peso) {
   No* novoNo = (No*)malloc(sizeof(No));
   novoNo -> dest = dest;
@@ -64,19 +64,38 @@ void printGrafo(Grafo* grafo) {
   }
 }
 
+void fleury(Grafo* grafo, int vInicial) {
+  // marca os vertices visitados
+  int* visitado = (int*)calloc(grafo -> v, sizeof(int));
+
+  printf("Caminho de Fleury:\n");
+
+  int atual = vInicial;
+  printf("%d", atual);
+
+  while () {
+    
+  }
+}
+
 
 int main() {
-  int v = 5;
+  int v = 6;
   Grafo* grafo = criarGrafo(v);
 
   // Grafo, Origim, destino, peso da aresta
-  adicionarAresta(grafo, 0, 1, 2);
-  adicionarAresta(grafo, 0, 4, 5);
+  adicionarAresta(grafo, 0, 1, 5);
+  adicionarAresta(grafo, 0, 2, 3);
   adicionarAresta(grafo, 1, 2, 3);
-  adicionarAresta(grafo, 1, 3, 1);
-  adicionarAresta(grafo, 1, 4, 4);
-  adicionarAresta(grafo, 2, 3, 7);
-  adicionarAresta(grafo, 3, 4, 6);
+  adicionarAresta(grafo, 1, 3, 5);
+  adicionarAresta(grafo, 1, 5, 1);
+  adicionarAresta(grafo, 2, 4, 5);
+  adicionarAresta(grafo, 2, 5, 7);
+  adicionarAresta(grafo, 3, 4, 3);
+  adicionarAresta(grafo, 3, 5, 3);
+  adicionarAresta(grafo, 3, 6, 5);
+  adicionarAresta(grafo, 4, 5, 11);
+  adicionarAresta(grafo, 4, 6, 7);
 
   printGrafo(grafo);
 
