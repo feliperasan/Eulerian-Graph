@@ -64,6 +64,12 @@ void printGrafo(Grafo* grafo) {
   }
 }
 
+// verificar se um vértice tem aresta adjacente que não seja uma ponte
+int semPonteAdjacente() {
+
+}
+
+
 void fleury(Grafo* grafo, int vInicial) {
   // marca os vertices visitados
   int* visitado = (int*)calloc(grafo -> v, sizeof(int));
