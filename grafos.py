@@ -1,6 +1,6 @@
 # ALUNOS: FELIPE R. S. BARBOSA, JOAQUIM A. D. VIANA, LARISSA P. S. GARCIA
 # MATRICULA: 202320070005     , 202320080005       , 202320070010
-# ATIVIDADE 2 DO TRABALHO DE GRAFOS
+# PROBLEMA 2 DO TRABALHO DE GRAFOS
 
 # defaultdict é uma variante do dicionário padrão, mas permite definir um valor padrão para chaves ausentes. Isso é usado para criar a estrutura do grafo, em que cada vértice é representado por uma chave e possui uma lista de arestas adjacentes.
 
@@ -116,11 +116,12 @@ class Grafo:
                 atual = anterior[atual]
         return caminho[::-1]  # Inverte o caminho
 
-    # Retorna o peso de uma aresta entre dois vértices.
+    
     def pesoAresta(self, origem, destino):
         for v, peso in self.grafo[origem]:
             if v == destino:
-                return peso
+                return peso # Retorna o peso de uma aresta entre dois vértices.
+            
     # Imprime a lista de adjacências do grafo
     def imprimirGrafo(self):
         for vertice in range(self.V):
@@ -131,7 +132,7 @@ class Grafo:
 
 print("")
 print("Grafo - 1 ----------------------------------------")
-# Instanciando o Grafo G1 da Figura da Atividade 2 com vértices de grau par.
+# Instanciando o Grafo G1 da Figura do PROBLEMA 2 com vértices de grau par.
 g1 = Grafo(7)
 
 g1.adicionarAresta(0, 1, 5) # Origem, Destino, Peso
@@ -160,7 +161,9 @@ else:
 print("Menor distância até o vértice de origem:")
 print(distancias)
 
-# Instanciando o Grafo G2 da Figura da Atividade 2 com grau ímpar.
+print("")
+print("Grafo - 2 ----------------------------------------")
+# Instanciando o Grafo G2 da Figura do PROBLEMA 2 com grau ímpar.
 g2 = Grafo(4)
 g2.adicionarAresta(0, 1, 1) # Origem, Destino, Peso
 g2.adicionarAresta(0, 2, 2)
