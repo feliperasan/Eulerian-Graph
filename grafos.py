@@ -10,39 +10,38 @@ from collections import defaultdict
 import heapq
 
 class Grafo:
-    def __init__(self, vertices):
-        self.V = vertices
-        self.grafo = defaultdict(list)
+    def __init__(self, vertices): # construtor da classe grafo
+        self.V = vertices # Atribuindo o valor do parâmetro vertices à variável de instância "V" da classe
+        self.grafo = defaultdict(list) # grafo inicializando como um objeto do tipo defaultdict com uma lista vazia como valor padrão.
 
-    # Recebe a origem, destino e peso de uma aresta e adiciona essa informação tanto na lista de adjacências do vértice de origem quanto na lista do vértice de destino. Tem complexidade O(1).
+    # adiciona uma aresta do ponto de origem ao destino com o peso da aresta
     def adicionarAresta(self, origem, destino, peso):
         self.grafo[origem].append((destino, peso))
         self.grafo[destino].append((origem, peso))
 
-    # Remove uma aresta do grafo, percorrendo as listas de adjacências do vértice de origem e destino e removendo a aresta correspondente. Tem Complexidade O(1).
     def removerAresta(self, origem, destino):
+        # enumerate para obter tanto o índice i quanto o valor (v, _) em cada iteração
+        # (v, _) representa uma tupla contendo o vértice adjacente v e o peso associado à aresta, mas o peso não será usado nesse caso.
         for i, (v, _) in enumerate(self.grafo[origem]):
-            if v == destino:
-                self.grafo[origem].pop(i)
-        for i, (u, _) in enumerate(self.grafo[destino]):
-            if u == origem:
+            if v == destino: # verifica se v é igual ao vértice de destino que desejamos remover
+                self.grafo[origem].pop(i) # remove a aresta encontrada
+        for i, (u, _) in enumerate(self.grafo[destino]): # itera sobre a lista de adj do vértice de destino.
+            if u == origem: # verifica se o vértice adjacente u é igual ao vértice de origem
                 self.grafo[destino].pop(i)
 
-    #  Função auxiliar que conta o número de vértices alcançáveis a partir de um determinado vértice. Utiliza-se uma recursividade para percorrer o grafo e marca os vértices visitados para evitar loops infinitos. Tem Complexidade O(V + E).
     def contarVerticesAlcancaveis(self, v, visitado):
-        count = 1
+        count = 1 # conta o nº de vértices
         visitado[v] = True
         for i, _ in self.grafo[v]:
-            if not visitado[i]:
+            if not visitado[i]: # verifica se não foi visitado
                 count += self.contarVerticesAlcancaveis(i, visitado)
-        return count
+        return count # retorna o nº de vértices alcançáveis a partir de v
 
-    # Verifica se uma aresta entre dois vértices é a próxima aresta válida em um caminho euleriano. Ela realiza uma comparação entre a quantidade de vértices alcançáveis antes e depois de remover a aresta. Tem Complexidade O(V + E).
     def arestaProximaValida(self, u, v):
-        if len(self.grafo[u]) == 1:
+        if len(self.grafo[u]) == 1: # verifica se o vértice u possui apenas uma aresta adjacente
             return True
         else:
-            visitado = [False] * self.V
+            visitado = [False] * self.V # inicializa com False para cada vértice no grafo
             count1 = self.contarVerticesAlcancaveis(u, visitado)
 
             self.removerAresta(u, v)
@@ -51,17 +50,15 @@ class Grafo:
 
             self.adicionarAresta(u, v, 0)
 
-            return False if count1 > count2 else True
+            return False if count1 > count2 else True # Se count1 for maior que count2, significa que após a remoção da aresta entre u e v, há menos vértices alcançáveis a partir de u.
 
-    # Verifica se um caminho euleriano existe no grafo. A Função começa verificando se há vértices com grau ímpar no grafo. Se houver no máximo 2 vértices com grau ímpar, então um caminho euleriano é possível.
-    # Se o caminho euleriano for possível, a função chama a função imprimirCaminhoEulerianoUtil para construir o caminho. Tem Complexidade O(V + E).
     def encontrarCaminhoEuleriano(self):
         grau_impar = []
         for i in range(self.V):
             if len(self.grafo[i]) % 2 != 0:
                 grau_impar.append(i)
 
-        if len(grau_impar) == 0 or len(grau_impar) == 2:
+        if len(grau_impar) == 0 or len(grau_impar) == 2: # verifica se possui 0 v impar ou exatamente 2
             caminho = []
             if len(grau_impar) == 0:
                 u = 0
@@ -74,45 +71,45 @@ class Grafo:
 
     # Algoritmo recursivo que constrói o caminho euleriano.
     def imprimirCaminhoEulerianoUtil(self, u, caminho):
-        for v, peso in self.grafo[u]:
-            if self.arestaProximaValida(u, v):
+        for v, peso in self.grafo[u]: # itera sobre cada elemento da lista de adjacência do vértice u
+            if self.arestaProximaValida(u, v): # se for valida executa o bloco.
                 caminho.append((u, v, peso))
                 self.removerAresta(u, v)
                 self.imprimirCaminhoEulerianoUtil(v, caminho)
 
-    # implementa o algoritmo de Dijkstra para encontrar a menor distância entre um vértice de origem e todos os outros vértices. Ela utiliza uma fila de prioridade (implementada como um heap) para selecionar o vértice com a menor distância. Tem Complexidade O((V + E) log V).
-    def menorDistancia(self, origem):
-        distancias = [float('inf')] * self.V
-        distancias[origem] = 0
-        anterior = {}  # Dicionário para armazenar o vértice anterior no caminho mais curto
-        heap = [(0, origem)]
 
-        while heap:
+    def menorDistancia(self, origem):
+        distancias = [float('inf')] * self.V # elementos inicializados com infinito
+        distancias[origem] = 0 # define vertice de partida como 0
+        anterior = {}  # Dicionário para armazenar o vértice anterior no caminho mais curto
+        heap = [(0, origem)] # cria fila de prioridade, inicializado com uma tupla contendo a distância (0) e o vértice de origem
+
+        while heap: # Enquanto houver vértice, faça.
             distancia, vertice = heapq.heappop(heap)
 
-            if distancia > distancias[vertice]:
+            if distancia > distancias[vertice]: # verifica se a distância atual é maior
                 continue
 
-            for adjacente, peso in self.grafo[vertice]:
+            for adjacente, peso in self.grafo[vertice]: # itera sobre cada vértice adjacente ao vértice atual, juntamente com o peso da aresta que os conecta.
                 nova_distancia = distancia + peso
 
                 if nova_distancia < distancias[adjacente]:
-                    distancias[adjacente] = nova_distancia
+                    distancias[adjacente] = nova_distancia # atualiza a distância registrada para o vértice adjacente
                     anterior[adjacente] = vertice  # Atualiza o vértice anterior
-                    heapq.heappush(heap, (nova_distancia, adjacente))
+                    heapq.heappush(heap, (nova_distancia, adjacente)) # atualiza a distância registrada para o vértice adjacente
 
         caminho = self.construirCaminho(origem, anterior)
         return distancias, caminho # Retorna um array com as menores distancias e um dict que contem os vértices anteriores do caminho mínimo. 
 
     # Constrói o caminho mais curto a partir do dicionário de vértices
     def construirCaminho(self, origem, anterior):
-        caminho = []
-        for vertice in range(self.V):
+        caminho = [] # armazena as arestas que compõem o caminho mínimo
+        for vertice in range(self.V): # itera sob todos os vértices do grafo
             if vertice == origem:
                 continue
             atual = vertice
             while atual != origem:
-                caminho.append((anterior[atual], atual, self.pesoAresta(anterior[atual], atual)))
+                caminho.append((anterior[atual], atual, self.pesoAresta(anterior[atual], atual))) # adiciona uma tupla à lista caminho, essa tupla representa uma aresta no caminho mínimo.
                 atual = anterior[atual]
         return caminho[::-1]  # Inverte o caminho
 
