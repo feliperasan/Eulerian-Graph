@@ -32,7 +32,7 @@ class Grafo:
     def contarVerticesAlcancaveis(self, v, visitado):
         count = 1 # conta o nº de vértices
         visitado[v] = True
-        for i, _ in self.grafo[v]:
+        for i, _ in self.grafo[v]: # o _ ignora o segundo elemento da tupla (peso)
             if not visitado[i]: # verifica se não foi visitado
                 count += self.contarVerticesAlcancaveis(i, visitado)
         return count # retorna o nº de vértices alcançáveis a partir de v
