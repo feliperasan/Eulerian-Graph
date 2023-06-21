@@ -14,21 +14,15 @@ class Grafo:
         self.V = vertices
         self.grafo = defaultdict(list)
 
-    # Recebe a origem, destino e peso de um arco e adiciona essa informação na lista de adjacências do vértice de origem.
-    # Tem complexidade O(1).
     def adicionarArco(self, origem, destino, peso):
         self.grafo[origem].append((destino, peso))
         # self.grafo[destino].append((origem, peso)) removido visto que trata-se um grafo orientado.
 
-    # Remove um arco do grafo, percorrendo as listas de adjacências do vértice de origem e removendo a aresta correspondente.
-    # Tem Complexidade O(V).
     def removerArco(self, origem, destino):
         for i, (v, _) in enumerate(self.grafo[origem]):
             if v == destino:
                 self.grafo[origem].pop(i)
 
-    #  Função auxiliar que conta o número de vértices alcançáveis a partir de um determinado vértice. Utiliza-se uma recursividade para percorrer o grafo e marca os vértices visitados para evitar loops infinitos.
-    # Tem Complexidade O(V).
     def contarVerticesAlcancaveis(self, v, visitado):
         count = 1
         visitado[v] = True
@@ -37,8 +31,6 @@ class Grafo:
                 count += self.contarVerticesAlcancaveis(i, visitado)
         return count
 
-    # Verifica se um Arco entre dois vértices é o próximo arco válido em um caminho euleriano. Ele realiza uma comparação entre a quantidade de vértices alcançáveis antes e depois de remover o arco.
-    # Tem Complexidade O(V), devido a Função contarVerticesAlcancaveis().
     def arcoProximoValido(self, u, v):
         if len(self.grafo[u]) == 1:
             return True
@@ -55,26 +47,26 @@ class Grafo:
             return False if count1 > count2 else True
 
     # Verifica se um caminho euleriano existe no grafo.
-    # Tem complexidade O(V), denomiado pela Função arcoProximoValido().
     def encontrarCaminhoEuleriano(self):
-        grau_entrada = [0] * self.V
-        grau_saida = [0] * self.V
+        grau_entrada = [0] * self.V # lista usada para armazenar o grau de entrada de cada vértice do grafo.
+        grau_saida = [0] * self.V # usada para armazenar o grau de saída de cada vértice do grafo.
 
-        for i in range(self.V):
+        for i in range(self.V): # Percorrer todos os arcos do grafo e calcula os graus de entrada e saída de cada vértice.
             for v, _ in self.grafo[i]:
                 grau_saida[i] += 1
                 grau_entrada[v] += 1
 
         for i in range(self.V):
-            if grau_entrada[i] != grau_saida[i]:
+            if grau_entrada[i] != grau_saida[i]: # verifica se existe algum vértice em que o grau de entrada é diferente do grau de saída.
+                # Se essa condição for verdadeira, significa que não há caminho euleriano no grafo, pois há vértices com uma diferença entre as arestas que entram e saem. Nesse caso, o método retorna uma lista vazia [] indicando a inexistência de um caminho euleriano.
                 return []
 
-        caminho = []
+        caminho = [] # armazena o caminho euleriano encontrado encontrado.
         u = 0
         self.imprimirCaminhoEulerianoUtil(u, caminho)
         return caminho # retorna um array de caminho
 
-    # Função recursiva que percorre as arestas em um caminho euleriano. No pior caso, ela percorre todas as arestas do grafo, portanto, sua complexidade é O(E), onde E é o número de arestas do grafo.
+    # Método responsável por construir o caminho euleriano a partir do vértice de partida
     def imprimirCaminhoEulerianoUtil(self, u, caminho):
         for v, peso in self.grafo[u]:
             if self.arcoProximoValido(u, v):
@@ -83,7 +75,6 @@ class Grafo:
                 self.imprimirCaminhoEulerianoUtil(v, caminho)
 
     # Algoritmo de Dijkstra usando uma fila de prioridade (heap).
-    # Tem Complexidade O((V + E) log V).
     def menorDistancia(self, origem):
         distancias = [float('inf')] * self.V
         distancias[origem] = 0
