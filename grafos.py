@@ -111,7 +111,7 @@ class Grafo:
             while atual != origem:
                 caminho.append((anterior[atual], atual, self.pesoAresta(anterior[atual], atual))) # adiciona uma tupla à lista caminho, essa tupla representa uma aresta no caminho mínimo.
                 atual = anterior[atual]
-        return caminho[::-1]  # Inverte o caminho
+        return caminho[::-1]  # Inverte o caminho para garantir a ordem correta do v de origem até o destino
 
     
     def pesoAresta(self, origem, destino):
@@ -147,7 +147,7 @@ g1.adicionarAresta(4, 6, 7)
 
 g1.imprimirGrafo()
 
-distancias, caminho_euleriano = g1.menorDistancia(0)
+distancias, caminho_euleriano = g1.menorDistancia(0) # caminho_euleriano armazena o caminho obtido a partir do método "imprimirCaminhoEulerianoUtil".
 if caminho_euleriano:
     print("Caminho Euleriano:")
     for u, v, peso in caminho_euleriano:

@@ -148,6 +148,7 @@ else:
     print("Não há caminho euleriano no grafo.")
 
 print("Menor distância até o vértice de origem:")
+
 distancias, caminho_mais_curto = g1.menorDistancia(0)
 if caminho_mais_curto:
     print("Caminho mais curto:")
@@ -176,6 +177,7 @@ else:
     print("Não há caminho euleriano no grafo.")
 
 print("Menor distância até o vértice de origem:")
+
 distancias, caminho_mais_curto = g2.menorDistancia(0)
 if caminho_mais_curto:
     print("Caminho mais curto:")
