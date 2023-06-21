@@ -116,7 +116,7 @@ class Grafo:
     
     def pesoAresta(self, origem, destino):
         for v, peso in self.grafo[origem]:
-            if v == destino:
+            if v == destino: # verifica se o vértice v é igual ao destino. Se for o caso, significa que encontramos a aresta que liga a origem ao destino. Nesse caso, o método retorna o peso dessa aresta. Se o loop terminar sem encontrar a aresta entre a origem e o destino, o método não encontra o peso e, portanto, não há uma aresta direta entre os dois vértices. Isso pode acontecer se não houver uma aresta que liga a origem e o destino no grafo.
                 return peso # Retorna o peso de uma aresta entre dois vértices.
             
     # Imprime a lista de adjacências do grafo
